@@ -13,7 +13,7 @@ import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
-public class ComplexElementsTests {
+public class ComplexElementsTest {
 
     @BeforeEach
     public void setUp() {
