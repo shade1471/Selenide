@@ -8,10 +8,11 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 
 public class CardDeliveryTest {
 
@@ -22,16 +23,16 @@ public class CardDeliveryTest {
         $("[data-test-id=date] .input__control").sendKeys(Keys.BACK_SPACE);
     }
 
-
     @Test
     void shouldOrderCard() {
         $("[data-test-id=city] .input__control").setValue("Новосибирск");
-        $("[data-test-id=date] .input__control").setValue(LocalDate.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        String dateDelivery = LocalDate.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        $("[data-test-id=date] .input__control").setValue(dateDelivery);
         $("[data-test-id=name] .input__control").setValue("Андрей Грибанов");
         $("[data-test-id=phone] .input__control").setValue("+79200000000");
         $("[data-test-id=agreement]").click();
         $(byText("Забронировать")).click();
-        $("[data-test-id=notification] .notification__content").shouldHave(text("Встреча успешно забронирована на "), Duration.ofSeconds(15));
+        $("[data-test-id=notification] .notification__content").shouldHave(text("Встреча успешно забронирована на " + dateDelivery), Duration.ofSeconds(15));
     }
 
     @Test
@@ -88,23 +89,25 @@ public class CardDeliveryTest {
     @Test
     public void shouldSendFormWithDoubleSurname() {
         $("[data-test-id=city] .input__control").setValue("Новосибирск");
-        $("[data-test-id=date] .input__control").setValue(LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        String dateDelivery = LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        $("[data-test-id=date] .input__control").setValue(dateDelivery);
         $("[data-test-id=name] .input__control").setValue("Михаил Салтыков-Щедрин");
         $("[data-test-id=phone] .input__control").setValue("+79200000000");
         $("[data-test-id=agreement]").click();
         $(byText("Забронировать")).click();
-        $("[data-test-id=notification] .notification__content").shouldHave(text("Встреча успешно забронирована на "), Duration.ofSeconds(15));
+        $("[data-test-id=notification] .notification__content").shouldHave(text("Встреча успешно забронирована на " + dateDelivery), Duration.ofSeconds(15));
     }
 
     @Test
     public void shouldSendFormByNameOfCityWithDash() {
         $("[data-test-id=city] .input__control").setValue("Йошкар-Ола");
-        $("[data-test-id=date] .input__control").setValue(LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        String dateDelivery = LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        $("[data-test-id=date] .input__control").setValue(dateDelivery);
         $("[data-test-id=name] .input__control").setValue("Андрей Грибанов");
         $("[data-test-id=phone] .input__control").setValue("+79200000000");
         $("[data-test-id=agreement]").click();
         $(byText("Забронировать")).click();
-        $("[data-test-id=notification] .notification__content").shouldHave(text("Встреча успешно забронирована на "), Duration.ofSeconds(15));
+        $("[data-test-id=notification] .notification__content").shouldHave(text("Встреча успешно забронирована на " + dateDelivery), Duration.ofSeconds(15));
     }
 
     @Test
@@ -171,36 +174,6 @@ public class CardDeliveryTest {
         $("[data-test-id=agreement]").click();
         $(byText("Забронировать")).click();
         $("[data-test-id=phone].input_invalid .input__sub").shouldHave(text("Телефон указан неверно"));
-    }
-
-    @Test
-    void shouldCheckListOfCities() {
-        $("[data-test-id=city] .input__control").setValue("Нов");
-        $$(".menu > .menu-item").filter(visible).get(0).shouldHave(text("Великий Новгород"));
-        $$(".menu > .menu-item").filter(visible).get(1).shouldHave(text("Иваново"));
-        $$(".menu > .menu-item").filter(visible).get(2).shouldHave(text("Нижний Новгород"));
-        $$(".menu > .menu-item").filter(visible).get(3).shouldHave(text("Новосибирск"));
-        $$(".menu > .menu-item").filter(visible).get(4).shouldHave(text("Ульяновск"));
-    }
-
-    @Test
-    void shouldCheckAutoCompleteByFieldCityWithOneChar() {
-        $("[data-test-id=city] .input__control").setValue("Н");
-        $$(".menu > .menu-item").isEmpty();
-
-    }
-
-    @Test
-    void shouldSetCityUsingForm() {
-        $("[data-test-id=city] .input__control").setValue("Нов");
-        $$(".menu > .menu-item").findBy(text("Новосибирск")).click();
-        $("[data-test-id=city] .input__control").shouldHave(value("Новосибирск"));
-    }
-
-    @Test
-    void shouldCheckSizeListOptions() {
-        $("[data-test-id=city] .input__control").setValue("Мо");
-        $$(".menu > .menu-item").shouldHave(sizeGreaterThan(1));
     }
 
 }
