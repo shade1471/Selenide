@@ -48,10 +48,10 @@ public class ComplexElementsTest {
         $("[data-test-id=city] .input__control").setValue("Но");
         $$(".menu > .menu-item").findBy(text("Новосибирск")).click();
         $("[data-test-id=date] .input__control").click();
-        if ($$("tbody .calendar__row > [role=gridcell]").findBy(text(LocalDate.now().plusWeeks(2).format(DateTimeFormatter.ofPattern("dd")))).isDisplayed()) {
+        if ($$("tbody .calendar__row > .calendar__day_type_off[role=gridcell]").findBy(text(LocalDate.now().plusWeeks(2).format(DateTimeFormatter.ofPattern("dd")))).isDisplayed()) {
+            $(".calendar__title > .calendar__arrow_direction_right.calendar__arrow_double + .calendar__arrow_direction_right").click();
             $$("tbody .calendar__row > [role=gridcell]").findBy(text(LocalDate.now().plusWeeks(2).format(DateTimeFormatter.ofPattern("dd")))).click();
         } else {
-            $(".calendar__title > .calendar__arrow_direction_right.calendar__arrow_double + .calendar__arrow_direction_right").click();
             $$("tbody .calendar__row > [role=gridcell]").findBy(text(LocalDate.now().plusWeeks(2).format(DateTimeFormatter.ofPattern("dd")))).click();
         }
         $("[data-test-id=name] .input__control").setValue("Андрей Грибанов");
