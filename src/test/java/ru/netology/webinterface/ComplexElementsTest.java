@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
@@ -11,15 +12,53 @@ import java.util.Locale;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.files.DownloadActions.click;
 
 public class ComplexElementsTest {
 
     @BeforeEach
     public void setUp() {
         open("http://localhost:9999");
-        $("[data-test-id=date] .input__control").sendKeys(Keys.CONTROL + "A");
-        $("[data-test-id=date] .input__control").sendKeys(Keys.BACK_SPACE);
+    }
+
+    @Test
+    void shouldOrderCardUsingComplexElementsFirstPossibleDay() {
+        //Заказ карты на ближайший доступный день
+
+        String dateDelivery = LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        $("[data-test-id=city] .input__control").setValue("Но");
+        $$(".menu > .menu-item").findBy(text("Новосибирск")).click();
+        $("[data-test-id=date] .input__control").click();
+        $$("tbody .calendar__row > [data-day]").first().click();
+        $("[data-test-id=date] .input__control").shouldHave(value(LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
+        $("[data-test-id=name] .input__control").setValue("Андрей Грибанов");
+        $("[data-test-id=phone] .input__control").setValue("+79200000000");
+        $("[data-test-id=agreement]").click();
+        $(byText("Забронировать")).click();
+        $("[data-test-id=notification] .notification__content").shouldHave(text("Встреча успешно забронирована на " + dateDelivery), Duration.ofSeconds(15));
+    }
+
+    @Test
+    void OrderCardIfPossibleDateNextMonth() {
+        //Заказ карты на дату через 2 недели от текущей
+
+        String dateDelivery = LocalDate.now().plusWeeks(2).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        $("[data-test-id=city] .input__control").setValue("Но");
+        $$(".menu > .menu-item").findBy(text("Новосибирск")).click();
+        $("[data-test-id=date] .input__control").click();
+        if ($$("tbody .calendar__row > [role=gridcell]").findBy(text(LocalDate.now().plusWeeks(2).format(DateTimeFormatter.ofPattern("dd")))).isDisplayed()) {
+            $$("tbody .calendar__row > [role=gridcell]").findBy(text(LocalDate.now().plusWeeks(2).format(DateTimeFormatter.ofPattern("dd")))).click();
+        } else {
+            $(".calendar__title > .calendar__arrow_direction_right.calendar__arrow_double + .calendar__arrow_direction_right").click();
+            $$("tbody .calendar__row > [role=gridcell]").findBy(text(LocalDate.now().plusWeeks(2).format(DateTimeFormatter.ofPattern("dd")))).click();
+        }
+        $("[data-test-id=name] .input__control").setValue("Андрей Грибанов");
+        $("[data-test-id=phone] .input__control").setValue("+79200000000");
+        $("[data-test-id=agreement]").click();
+        $(byText("Забронировать")).click();
+        $("[data-test-id=notification] .notification__content").shouldHave(text("Встреча успешно забронирована на " + dateDelivery), Duration.ofSeconds(15));
     }
 
     @Test
@@ -70,7 +109,7 @@ public class ComplexElementsTest {
     void shouldIncreaseYearByOneInCalendar() {
         $("[data-test-id=date] .input__control").click();
         $(".calendar__title > .calendar__arrow_direction_right.calendar__arrow_double").click();
-        $(".calendar__name").shouldHave(text(LocalDate.now().plusYears(1).format(DateTimeFormatter.ofPattern("yyyy")))); //.getDisplayName(TextStyle.FULL_STANDALONE,Locale.forLanguageTag("ru"))));
+        $(".calendar__name").shouldHave(text(LocalDate.now().plusYears(1).format(DateTimeFormatter.ofPattern("yyyy"))));
     }
 
     @Test
