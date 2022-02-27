@@ -2,7 +2,6 @@ package ru.netology.webinterface;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Keys;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -14,7 +13,6 @@ import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.files.DownloadActions.click;
 
 public class ComplexElementsTest {
 
@@ -32,12 +30,14 @@ public class ComplexElementsTest {
         $$(".menu > .menu-item").findBy(text("Новосибирск")).click();
         $("[data-test-id=date] .input__control").click();
         $$("tbody .calendar__row > [data-day]").first().click();
-        $("[data-test-id=date] .input__control").shouldHave(value(LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
+        $("[data-test-id=date] .input__control")
+                .shouldHave(value(LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
         $("[data-test-id=name] .input__control").setValue("Андрей Грибанов");
         $("[data-test-id=phone] .input__control").setValue("+79200000000");
         $("[data-test-id=agreement]").click();
         $(byText("Забронировать")).click();
-        $("[data-test-id=notification] .notification__content").shouldHave(text("Встреча успешно забронирована на " + dateDelivery), Duration.ofSeconds(15));
+        $("[data-test-id=notification] .notification__content")
+                .shouldHave(text("Встреча успешно забронирована на " + dateDelivery), Duration.ofSeconds(15));
     }
 
     @Test
@@ -48,17 +48,21 @@ public class ComplexElementsTest {
         $("[data-test-id=city] .input__control").setValue("Но");
         $$(".menu > .menu-item").findBy(text("Новосибирск")).click();
         $("[data-test-id=date] .input__control").click();
-        if ($$("tbody .calendar__row > .calendar__day_type_off[role=gridcell]").findBy(text(LocalDate.now().plusWeeks(2).format(DateTimeFormatter.ofPattern("dd")))).isDisplayed()) {
-            $(".calendar__title > .calendar__arrow_direction_right.calendar__arrow_double + .calendar__arrow_direction_right").click();
-            $$("tbody .calendar__row > [role=gridcell]").findBy(text(LocalDate.now().plusWeeks(2).format(DateTimeFormatter.ofPattern("dd")))).click();
+        if ($$("tbody .calendar__row > .calendar__day_type_off[role=gridcell]")
+                .findBy(text(LocalDate.now().plusWeeks(2).format(DateTimeFormatter.ofPattern("dd")))).isDisplayed()) {
+            $(".calendar__arrow_direction_right.calendar__arrow_double + .calendar__arrow_direction_right").click();
+            $$("tbody .calendar__row > [role=gridcell]")
+                    .findBy(text(LocalDate.now().plusWeeks(2).format(DateTimeFormatter.ofPattern("dd")))).click();
         } else {
-            $$("tbody .calendar__row > [role=gridcell]").findBy(text(LocalDate.now().plusWeeks(2).format(DateTimeFormatter.ofPattern("dd")))).click();
+            $$("tbody .calendar__row > [role=gridcell]")
+                    .findBy(text(LocalDate.now().plusWeeks(2).format(DateTimeFormatter.ofPattern("dd")))).click();
         }
         $("[data-test-id=name] .input__control").setValue("Андрей Грибанов");
         $("[data-test-id=phone] .input__control").setValue("+79200000000");
         $("[data-test-id=agreement]").click();
         $(byText("Забронировать")).click();
-        $("[data-test-id=notification] .notification__content").shouldHave(text("Встреча успешно забронирована на " + dateDelivery), Duration.ofSeconds(15));
+        $("[data-test-id=notification] .notification__content")
+                .shouldHave(text("Встреча успешно забронирована на " + dateDelivery), Duration.ofSeconds(15));
     }
 
     @Test
@@ -95,9 +99,11 @@ public class ComplexElementsTest {
     void shouldCheckThatMonthAndYearAreCurrentForFirstPossibleDay() {
         $("[data-test-id=date] .input__control").click();
         if (LocalDate.now().plusDays(3).getMonth() == LocalDate.now().plusDays(28).getMonth()) {
-            $(".calendar__name").shouldHave(text(LocalDate.now().plusDays(28).getMonth().getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))));
+            $(".calendar__name").shouldHave(text(LocalDate.now().plusDays(28).getMonth()
+                    .getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))));
         } else {
-            $(".calendar__name").shouldHave(text(LocalDate.now().getMonth().getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))));
+            $(".calendar__name").shouldHave(text(LocalDate.now().getMonth()
+                    .getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))));
         }
         $(".calendar__name").shouldHave(text(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"))));
     }
@@ -105,42 +111,49 @@ public class ComplexElementsTest {
     @Test
     void shouldIncreaseMonthByOneInCalendar() {
         $("[data-test-id=date] .input__control").click();
-        $(".calendar__title > .calendar__arrow_direction_right.calendar__arrow_double + .calendar__arrow_direction_right").click();
+        $(".calendar__arrow_direction_right.calendar__arrow_double + .calendar__arrow_direction_right").click();
         if (LocalDate.now().plusDays(3).getMonth() == LocalDate.now().plusDays(28).getMonth()) {
-            $(".calendar__name").shouldHave(text(LocalDate.now().plusDays(56).getMonth().getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))));
+            $(".calendar__name").shouldHave(text(LocalDate.now().plusDays(56).getMonth()
+                    .getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))));
         } else {
-            $(".calendar__name").shouldHave(text(LocalDate.now().plusDays(28).getMonth().getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))));
+            $(".calendar__name").shouldHave(text(LocalDate.now().plusDays(28).getMonth()
+                    .getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))));
         }
     }
 
     @Test
     void shouldIncreaseYearByOneInCalendar() {
         $("[data-test-id=date] .input__control").click();
-        $(".calendar__title > .calendar__arrow_direction_right.calendar__arrow_double").click();
-        $(".calendar__name").shouldHave(text(LocalDate.now().plusYears(1).format(DateTimeFormatter.ofPattern("yyyy"))));
+        $(".calendar__arrow_direction_right.calendar__arrow_double").click();
+        $(".calendar__name").
+                shouldHave(text(LocalDate.now().plusYears(1).format(DateTimeFormatter.ofPattern("yyyy"))));
     }
 
     @Test
     void shouldCheckImpossibilityDecreaseMonthForCurrentDate() {
         $("[data-test-id=date] .input__control").click();
-        $(".calendar__title > .calendar__arrow_direction_left.calendar__arrow_double + .calendar__arrow_direction_left[data-disabled=true]").isEnabled();
+        $(".calendar__arrow_direction_left.calendar__arrow_double + .calendar__arrow_direction_left[data-disabled=true]")
+                .isEnabled();
     }
 
     @Test
     void shouldCheckImpossibilityDecreaseYearForCurrentDate() {
         $("[data-test-id=date] .input__control").click();
-        $(".calendar__title > .calendar__arrow_direction_left.calendar__arrow_double[data-disabled=true]").isEnabled();
+        $(".calendar__title > .calendar__arrow_direction_left.calendar__arrow_double[data-disabled=true]")
+                .isEnabled();
     }
 
     @Test
     void shouldDecreaseByOneMonthInCalendar() {
         $("[data-test-id=date] .input__control").click();
-        $(".calendar__title > .calendar__arrow_direction_right.calendar__arrow_double + .calendar__arrow_direction_right").click();
-        $(".calendar__title > .calendar__arrow_direction_left.calendar__arrow_double + .calendar__arrow_direction_left").click();
+        $(".calendar__arrow_direction_right.calendar__arrow_double + .calendar__arrow_direction_right").click();
+        $(".calendar__arrow_direction_left.calendar__arrow_double + .calendar__arrow_direction_left").click();
         if (LocalDate.now().plusDays(3).getMonth() == LocalDate.now().plusMonths(1).getMonth()) {
-            $(".calendar__name").shouldHave(text(LocalDate.now().plusMonths(1).getMonth().getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))));
+            $(".calendar__name").shouldHave(text(LocalDate.now().plusMonths(1).getMonth()
+                    .getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))));
         } else {
-            $(".calendar__name").shouldHave(text(LocalDate.now().getMonth().getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))));
+            $(".calendar__name").shouldHave(text(LocalDate.now().getMonth()
+                    .getDisplayName(TextStyle.FULL_STANDALONE, Locale.forLanguageTag("ru"))));
         }
     }
 
@@ -156,7 +169,8 @@ public class ComplexElementsTest {
     void shouldSelectDateFromCalendarByFirstPossible() {
         $("[data-test-id=date] .input__control").click();
         $$("tbody .calendar__row > [data-day]").first().click();
-        $("[data-test-id=date] .input__control").shouldHave(value(LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
+        $("[data-test-id=date] .input__control")
+                .shouldHave(value(LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
     }
 
 }

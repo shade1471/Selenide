@@ -32,12 +32,14 @@ public class CardDeliveryTest {
         $("[data-test-id=phone] .input__control").setValue("+79200000000");
         $("[data-test-id=agreement]").click();
         $(byText("Забронировать")).click();
-        $("[data-test-id=notification] .notification__content").shouldHave(text("Встреча успешно забронирована на " + dateDelivery), Duration.ofSeconds(15));
+        $("[data-test-id=notification] .notification__content")
+                .shouldHave(text("Встреча успешно забронирована на " + dateDelivery), Duration.ofSeconds(15));
     }
 
     @Test
     void shouldOrderCardWithEmptyFieldByCity() {
-        $("[data-test-id=date] .input__control").setValue(LocalDate.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        $("[data-test-id=date] .input__control")
+                .setValue(LocalDate.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         $("[data-test-id=name] .input__control").setValue("Андрей Грибанов");
         $("[data-test-id=phone] .input__control").setValue("+79200000000");
         $("[data-test-id=agreement]").click();
@@ -48,7 +50,8 @@ public class CardDeliveryTest {
     @Test
     void shouldOrderCardWithEmptyFieldByName() {
         $("[data-test-id=city] .input__control").setValue("Новосибирск");
-        $("[data-test-id=date] .input__control").setValue(LocalDate.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        $("[data-test-id=date] .input__control")
+                .setValue(LocalDate.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         $("[data-test-id=phone] .input__control").setValue("+79200000000");
         $("[data-test-id=agreement]").click();
         $(byText("Забронировать")).click();
@@ -58,7 +61,8 @@ public class CardDeliveryTest {
     @Test
     void shouldOrderCardWithEmptyFieldByPhone() {
         $("[data-test-id=city] .input__control").setValue("Новосибирск");
-        $("[data-test-id=date] .input__control").setValue(LocalDate.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        $("[data-test-id=date] .input__control")
+                .setValue(LocalDate.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         $("[data-test-id=name] .input__control").setValue("Андрей Грибанов");
         $("[data-test-id=agreement]").click();
         $(byText("Забронировать")).click();
@@ -68,7 +72,8 @@ public class CardDeliveryTest {
     @Test
     void shouldOrderCardWithoutCheckBox() {
         $("[data-test-id=city] .input__control").setValue("Новосибирск");
-        $("[data-test-id=date] .input__control").setValue(LocalDate.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        $("[data-test-id=date] .input__control")
+                .setValue(LocalDate.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         $("[data-test-id=name] .input__control").setValue("Андрей Грибанов");
         $("[data-test-id=phone] .input__control").setValue("+79200000000");
         $(byText("Забронировать")).click();
@@ -78,12 +83,14 @@ public class CardDeliveryTest {
     @Test
     void shouldOrderCardWithDateLessThreeDays() {
         $("[data-test-id=city] .input__control").setValue("Новосибирск");
-        $("[data-test-id=date] .input__control").setValue(LocalDate.now().plusDays(2).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        $("[data-test-id=date] .input__control")
+                .setValue(LocalDate.now().plusDays(2).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         $("[data-test-id=name] .input__control").setValue("Андрей Грибанов");
         $("[data-test-id=phone] .input__control").setValue("+79200000000");
         $("[data-test-id=agreement]").click();
         $(byText("Забронировать")).click();
-        $("[data-test-id=date] .input_invalid .input__sub").shouldHave(text("Заказ на выбранную дату невозможен"));
+        $("[data-test-id=date] .input_invalid .input__sub")
+                .shouldHave(text("Заказ на выбранную дату невозможен"));
     }
 
     @Test
@@ -95,7 +102,8 @@ public class CardDeliveryTest {
         $("[data-test-id=phone] .input__control").setValue("+79200000000");
         $("[data-test-id=agreement]").click();
         $(byText("Забронировать")).click();
-        $("[data-test-id=notification] .notification__content").shouldHave(text("Встреча успешно забронирована на " + dateDelivery), Duration.ofSeconds(15));
+        $("[data-test-id=notification] .notification__content")
+                .shouldHave(text("Встреча успешно забронирована на " + dateDelivery), Duration.ofSeconds(15));
     }
 
     @Test
@@ -107,13 +115,15 @@ public class CardDeliveryTest {
         $("[data-test-id=phone] .input__control").setValue("+79200000000");
         $("[data-test-id=agreement]").click();
         $(byText("Забронировать")).click();
-        $("[data-test-id=notification] .notification__content").shouldHave(text("Встреча успешно забронирована на " + dateDelivery), Duration.ofSeconds(15));
+        $("[data-test-id=notification] .notification__content")
+                .shouldHave(text("Встреча успешно забронирована на " + dateDelivery), Duration.ofSeconds(15));
     }
 
     @Test
     public void shouldSendFormWithNotCyrillicSymbolsByName() {
         $("[data-test-id=city] .input__control").setValue("Новосибирск");
-        $("[data-test-id=date] .input__control").setValue(LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        $("[data-test-id=date] .input__control")
+                .setValue(LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         $("[data-test-id=name] .input__control").setValue("Andrey Gribanov");
         $("[data-test-id=phone] .input__control").setValue("+79200000000");
         $("[data-test-id=agreement]").click();
@@ -124,18 +134,21 @@ public class CardDeliveryTest {
     @Test
     public void shouldSendFormWithCityNotInList() {
         $("[data-test-id=city] .input__control").setValue("Северск");
-        $("[data-test-id=date] .input__control").setValue(LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        $("[data-test-id=date] .input__control")
+                .setValue(LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         $("[data-test-id=name] .input__control").setValue("Андрей Грибанов");
         $("[data-test-id=phone] .input__control").setValue("+79200000000");
         $("[data-test-id=agreement]").click();
         $(byText("Забронировать")).click();
-        $("[data-test-id=city].input_invalid .input__sub").shouldHave(text("Доставка в выбранный город недоступна"));
+        $("[data-test-id=city].input_invalid .input__sub")
+                .shouldHave(text("Доставка в выбранный город недоступна"));
     }
 
     @Test
     void shouldOrderCardWithPhone12Digits() {
         $("[data-test-id=city] .input__control").setValue("Новосибирск");
-        $("[data-test-id=date] .input__control").setValue(LocalDate.now().plusDays(5).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        $("[data-test-id=date] .input__control")
+                .setValue(LocalDate.now().plusDays(5).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         $("[data-test-id=name] .input__control").setValue("Андрей Грибанов");
         $("[data-test-id=phone] .input__control").setValue("+712345678901");
         $("[data-test-id=agreement]").click();
@@ -146,7 +159,8 @@ public class CardDeliveryTest {
     @Test
     void shouldOrderCardWithPhone10Digits() {
         $("[data-test-id=city] .input__control").setValue("Новосибирск");
-        $("[data-test-id=date] .input__control").setValue(LocalDate.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        $("[data-test-id=date] .input__control")
+                .setValue(LocalDate.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         $("[data-test-id=name] .input__control").setValue("Андрей Грибанов");
         $("[data-test-id=phone] .input__control").setValue("+7123456789");
         $("[data-test-id=agreement]").click();
@@ -157,7 +171,8 @@ public class CardDeliveryTest {
     @Test
     void shouldOrderCardWithPhoneWith11DigitsAndWithOutPlusSeven() {
         $("[data-test-id=city] .input__control").setValue("Новосибирск");
-        $("[data-test-id=date] .input__control").setValue(LocalDate.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        $("[data-test-id=date] .input__control")
+                .setValue(LocalDate.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         $("[data-test-id=name] .input__control").setValue("Андрей Грибанов");
         $("[data-test-id=phone] .input__control").setValue("81234567890");
         $("[data-test-id=agreement]").click();
@@ -168,7 +183,8 @@ public class CardDeliveryTest {
     @Test
     void shouldOrderCardWithPhoneValueHowString() {
         $("[data-test-id=city] .input__control").setValue("Новосибирск");
-        $("[data-test-id=date] .input__control").setValue(LocalDate.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        $("[data-test-id=date] .input__control")
+                .setValue(LocalDate.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         $("[data-test-id=name] .input__control").setValue("Андрей Грибанов");
         $("[data-test-id=phone] .input__control").setValue("test@test.ru");
         $("[data-test-id=agreement]").click();
